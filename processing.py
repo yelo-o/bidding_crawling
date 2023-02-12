@@ -5,10 +5,10 @@ from openpyxl.styles import PatternFill
 from crawling import *
 
 # 엑셀 후처리
-def excel_processing(srh_krd):
+def excel_processing():
     # dir = f'C:/Users/user/Desktop/VENVWorkspace/cafe_crawling/naver cafe crawling_2023-01-16 11.00.05.xlsx' # 테스트용
     global crawling_date
-    dir = f'C:/flyordig/bidding_crawling/{crawling_date}-{srh_krd}검색.xlsx'
+    dir = f'C:/flyordig/bidding_crawling/{crawling_date} 비딩 키워드 검색.xlsx'
     wb = load_workbook(dir) # 해당 경로의 엑셀 파일 불러오기
     ws = wb.active # 불러온 엑셀 파일의 시트 활성화
 
@@ -58,11 +58,11 @@ def excel_processing(srh_krd):
 
     # 저장 및 닫기
     # wb.save(filename = f'naver cafe crawling_2023-01-16 11.00.05.xlsx') # 테스트용
-    wb.save(filename = f'{crawling_date}-{srh_krd}검색.xlsx')
+    wb.save(filename = f'{crawling_date} 비딩 키워드 검색.xlsx')
     wb.close()
 
 # 비딩 키워드
-excel_processing(srh_krd='PC')
+excel_processing()
 # excel_processing(srh_krd='매각')
 # excel_processing(srh_krd='자산')
 # excel_processing(srh_krd='견적')
