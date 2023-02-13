@@ -6,7 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import pyperclip
 import pyautogui as pg
-from bs4 import BeautifulSoup as bs
 import pandas as pd
 from credentials import u_id, u_pw
 

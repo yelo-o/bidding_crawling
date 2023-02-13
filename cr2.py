@@ -1,14 +1,13 @@
 # 크롤링 관련 모듈
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import pyperclip
-import pyautogui as pg
 import pandas as pd
 from credentials import u_id, u_pw
-from get_urls import *
+from get_urls import urls
 
 
 # 변수 설정
@@ -16,6 +15,14 @@ now = datetime.now()
 st_now = str(now)
 crawling_date = st_now[0:10].replace(':',".")
 print(crawling_date)
+## 어제 16:01 시간 구하기
+yesterday = datetime.now() - timedelta(days=1)
+start_time = datetime(yesterday.year, yesterday.month, yesterday.day, 16, 1)
+start_time_str = str(start_time)
+## 오늘 16:00 시간 구하기
+today = datetime.now()
+end_time = datetime(today.year, today.month, today.day, 16, 0)
+end_time_str = str(end_time)
 
 # 엑셀 열 구성 데이터
 time_data = [] # 날짜 + 시간 열
@@ -31,12 +38,12 @@ def crawling_process():
     login() # 로그인 화면 이동 및 로그인
     moveToUrl() # 수집한 url로 이동
     
-    print('제목(title_data)<- 게시물 들어가서 뽑은 거',len(title_data))
-    print('제목(title_data)<- 게시물 들어가서 뽑은 거',title_data)
+    # print('제목(title_data)<- 게시물 들어가서 뽑은 거',len(title_data))
+    # print('제목(title_data)<- 게시물 들어가서 뽑은 거',title_data)
     print('날짜', len(time_data))
     print('날짜', time_data)
-    print('내용',len(content_data))
-    print('내용',content_data)
+    # print('내용',len(content_data))
+    # print('내용',content_data)
     
     print('-------------------------')
     
@@ -44,15 +51,8 @@ def crawling_process():
     data_to_excel(crawling_date)  # 데이터 엑셀로 변환
     
     browser.quit() # 브라우저 종료
-    
-    # 리스트 데이터들을 한번 초기화 시켜줘야 함
-    # time_data = []
-    # time_column = []
-    # date_column = []
-    # time_data = []
-    # content_data= []
 
-    pg.alert("크롤링 완료하였습니다!")
+    
 
     
 # 브라우저 실행 및 url 이동
@@ -123,22 +123,37 @@ def collect_data():
 
 # # 엑셀에 데이터 저장
 def data_to_excel(crawling_date):
-    # 시간 열 나누기 (1개 -> 2개)
-    global time_data
+    
+    global time_data, start_time, end_time
+    
+    
+    ## 시간 열 나누기 (1개 -> 2개)
     for time in time_data:  # time_data -> date_column, time_column 으로 분할
         global date_column, time_column
         a = time.split()
         date_column.append((a[0]))
         time_column.append((a[1]))
-    # 판다스 데이터 srh_krd 만들기
+    # 판다스 데이터 만들기
     index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
     total_data = pd.DataFrame({"제목" : title_data, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls}, index = index_list)
+    # total_data = pd.DataFrame({"제목" : title_data, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
+    
+    # ## 전일 16:01 ~ 금일 16:00 시간만 필터링
+    # total_data.loc[(total_data['날짜'] >= start_time_str) & (total_data['날짜'] <= end_time_str)]
+    
+    ## 내림차순 정렬
+    total_data.sort_values(by='시간', ascending=False, inplace=True)  # 시간 내림차순 정렬
+    total_data.sort_values(by='날짜', ascending=False, inplace=True)  # 날짜 내림차순 정렬
+    
+    ## 인덱스 이름 No.로 지정 
     total_data.index.name = "No."
-    # total_data.to_excel(f"{crawling_date}-{srh_krd}검색.xlsx",index=True)
+    
+    ## 중복행 제거
+    total_data.drop_duplicates(subset=['url'], keep='first',
+                               inplace=True, ignore_index=True)
+    
+    total_data.index = total_data.index + 1  # 0행부터 시작 -> 1행부터 시작
     total_data.to_excel(f"{crawling_date} 비딩 키워드 검색.xlsx",index=True)
 
 # 비딩 키워드
 crawling_process()
-# crawling_process(srh_krd='매각')
-# crawling_process(srh_krd='자산')
-# crawling_process(srh_krd='견적')

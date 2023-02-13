@@ -2,10 +2,13 @@
 import openpyxl
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import PatternFill
-from crawling import *
+import pyautogui as pg
+from cr2 import crawling_date
+
 
 # 엑셀 후처리
 def excel_processing():
+    global dir
     # dir = f'C:/Users/user/Desktop/VENVWorkspace/cafe_crawling/naver cafe crawling_2023-01-16 11.00.05.xlsx' # 테스트용
     global crawling_date
     dir = f'C:/flyordig/bidding_crawling/{crawling_date} 비딩 키워드 검색.xlsx'
@@ -60,9 +63,7 @@ def excel_processing():
     # wb.save(filename = f'naver cafe crawling_2023-01-16 11.00.05.xlsx') # 테스트용
     wb.save(filename = f'{crawling_date} 비딩 키워드 검색.xlsx')
     wb.close()
+    # pg.alert("크롤링 완료하였습니다!")
 
-# 비딩 키워드
+# 실행
 excel_processing()
-# excel_processing(srh_krd='매각')
-# excel_processing(srh_krd='자산')
-# excel_processing(srh_krd='견적')

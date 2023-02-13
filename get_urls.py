@@ -7,9 +7,12 @@ from credentials import u_id, u_pw
 
 
 # 검색 키워드
-# keywords = ['PC', '매각', '자산', '견적']
-keywords = ['PC', '매각']  # test
 urls = []
+keywords = ['PC', '매각', '자산', '견적']
+
+# keywords = ['PC', '매각']  # test1
+# keywords = ['PC']  # test2
+
 
 
 # 셀레니움 실행
