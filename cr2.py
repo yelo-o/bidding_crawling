@@ -15,14 +15,13 @@ now = datetime.now()
 st_now = str(now)
 crawling_date = st_now[0:10].replace(':',".")
 print(crawling_date)
-## 어제 16:01 시간 구하기
-yesterday = datetime.now() - timedelta(days=1)
-start_time = datetime(yesterday.year, yesterday.month, yesterday.day, 16, 1)
-start_time_str = str(start_time)
-## 오늘 16:00 시간 구하기
-today = datetime.now()
-end_time = datetime(today.year, today.month, today.day, 16, 0)
-end_time_str = str(end_time)
+
+# ## 어제 16:01 시간 구하기
+# yesterday = datetime.now() - timedelta(days=1)
+# start_time = datetime(yesterday.year, yesterday.month, yesterday.day, 16, 1)
+# ## 오늘 16:00 시간 구하기
+# today = datetime.now()
+# end_time = datetime(today.year, today.month, today.day, 16, 0)
 
 # 엑셀 열 구성 데이터
 time_data = [] # 날짜 + 시간 열
@@ -133,27 +132,42 @@ def data_to_excel(crawling_date):
         a = time.split()
         date_column.append((a[0]))
         time_column.append((a[1]))
+    
+    
+    
+    
     # 판다스 데이터 만들기
     index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
-    total_data = pd.DataFrame({"제목" : title_data, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls}, index = index_list)
-    # total_data = pd.DataFrame({"제목" : title_data, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
+    df = pd.DataFrame({"제목" : title_data, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls}, index = index_list)
+    # df = pd.DataFrame({"제목" : title_data, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
     
-    # ## 전일 16:01 ~ 금일 16:00 시간만 필터링
-    # total_data.loc[(total_data['날짜'] >= start_time_str) & (total_data['날짜'] <= end_time_str)]
+    
+    # 전일 ~ 금일만 필터링
+    df['날짜'] = pd.to_datetime(df['날짜'], format='%Y.%m.%d.').dt.date
+    
+    # 어제 날짜 계산하기
+    now = pd.Timestamp.now()
+    yesterday = now - pd.Timedelta(days=1)
+    
+    filtered_data = df[df['날짜'] >= yesterday].copy()
+    
+    
     
     ## 내림차순 정렬
-    total_data.sort_values(by='시간', ascending=False, inplace=True)  # 시간 내림차순 정렬
-    total_data.sort_values(by='날짜', ascending=False, inplace=True)  # 날짜 내림차순 정렬
+    # filtered_data.sort_values(by='시간', ascending=False, inplace=True)  # 시간 내림차순 정렬
+    filtered_data.sort_values(by='날짜', ascending=False, inplace=True)  # 날짜 내림차순 정렬
     
-    ## 인덱스 이름 No.로 지정 
-    total_data.index.name = "No."
     
     ## 중복행 제거
-    total_data.drop_duplicates(subset=['url'], keep='first',
-                               inplace=True, ignore_index=True)
+    filtered_data.drop_duplicates(keep='first', inplace=True,
+                                  ignore_index=True)
     
-    total_data.index = total_data.index + 1  # 0행부터 시작 -> 1행부터 시작
-    total_data.to_excel(f"{crawling_date} 비딩 키워드 검색.xlsx",index=True)
+    filtered_data.index = filtered_data.index + 1  # 0행부터 시작 -> 1행부터 시작
+    
+    ## 인덱스 이름 No.로 지정 
+    filtered_data.index.name = "No."
+    
+    filtered_data.to_excel(f"{crawling_date} 비딩 키워드 검색.xlsx",index=True)
 
 # 비딩 키워드
 crawling_process()

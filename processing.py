@@ -37,7 +37,7 @@ def excel_processing():
     # 열 너비 변경
     ws.column_dimensions['A'].width = 5
     ws.column_dimensions['B'].width = 50
-    ws.column_dimensions['C'].width = 10
+    ws.column_dimensions['C'].width = 12
     ws.column_dimensions['D'].width = 10
     ws.column_dimensions['E'].width = 100
     ws.column_dimensions['F'].width = 35
