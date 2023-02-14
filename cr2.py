@@ -143,6 +143,7 @@ def data_to_excel(crawling_date):
     
     
     # 전일 ~ 금일만 필터링
+    df['날짜'] = pd.to_datetime(df['날짜'], errors='coerce')
     df['날짜'] = pd.to_datetime(df['날짜'], format='%Y.%m.%d.').dt.date
     
     # 어제 날짜 계산하기
@@ -150,7 +151,6 @@ def data_to_excel(crawling_date):
     yesterday = now - pd.Timedelta(days=1)
     
     filtered_data = df[df['날짜'] >= yesterday].copy()
-    
     
     
     ## 내림차순 정렬
