@@ -16,12 +16,12 @@ st_now = str(now)
 crawling_date = st_now[0:10].replace(':',".")
 print(crawling_date)
 
-# ## 어제 16:01 시간 구하기
-# yesterday = datetime.now() - timedelta(days=1)
-# start_time = datetime(yesterday.year, yesterday.month, yesterday.day, 16, 1)
-# ## 오늘 16:00 시간 구하기
-# today = datetime.now()
-# end_time = datetime(today.year, today.month, today.day, 16, 0)
+## 어제 16:01 시간 구하기
+yesterday = datetime.now() - timedelta(days=1)
+start_time = datetime(yesterday.year, yesterday.month, yesterday.day, 16, 1)
+## 오늘 16:00 시간 구하기
+today = datetime.now()
+end_time = datetime(today.year, today.month, today.day, 16, 0)
 
 # 엑셀 열 구성 데이터
 time_data = [] # 날짜 + 시간 열
@@ -126,23 +126,14 @@ def data_to_excel(crawling_date):
     global time_data, start_time, end_time
     
     
-    ## 시간 열 나누기 (1개 -> 2개)
-    for time in time_data:  # time_data -> date_column, time_column 으로 분할
-        global date_column, time_column
-        a = time.split()
-        date_column.append((a[0]))
-        time_column.append((a[1]))
-    
-    
     # 판다스 데이터 만들기
     index_list = list(range(1, len(urls)+1)) # list(range(1,51)) # 1~50까지 넘버링
-    df = pd.DataFrame({"제목" : title_data, "날짜" : date_column, "시간" : time_column, "내용" : content_data, "url" : urls}, index = index_list)
-    # df = pd.DataFrame({"제목" : title_data, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
+    df = pd.DataFrame({"제목" : title_data, "날짜" : time_data, "내용" : content_data, "url" : urls}, index = index_list)
     
     
     # 전일 ~ 금일만 필터링
     df['날짜'] = pd.to_datetime(df['날짜'], errors='coerce')
-    df['날짜'] = pd.to_datetime(df['날짜'], format='%Y.%m.%d.').dt.date
+    df['날짜'] = pd.to_datetime(df['날짜'], format='%Y.%m.%d. %H:%M').dt.date
     
     # 어제 날짜 계산하기
     now = pd.Timestamp.now()
@@ -168,4 +159,8 @@ def data_to_excel(crawling_date):
     filtered_data.to_excel(f"{crawling_date} 비딩 키워드 검색.xlsx",index=True)
 
 # 비딩 키워드
-crawling_process()
+execute_browser() # 브라우저 실행 및 url 이동
+login() # 로그인 화면 이동 및 로그인
+moveToUrl() # 수집한 url로 이동
+print(title_data)
+print(time_data)
