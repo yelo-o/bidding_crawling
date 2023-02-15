@@ -51,8 +51,8 @@ for keyword in keywords:
     browser.switch_to.frame('cafe_main')
     
     # 게시글 50개씩 보이게 하기
-    # browser.find_element(By.CSS_SELECTOR,"#listSizeSelectDiv").click()
-    # browser.find_element(By.XPATH,"/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
+    browser.find_element(By.CSS_SELECTOR,"#listSizeSelectDiv").click()
+    browser.find_element(By.XPATH,"/html/body/div[1]/div/div[3]/div/div[3]/ul/li[7]/a").click()
     
     # 리스트 화면에 있는 글번호 담기
     global numList, title_list
