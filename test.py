@@ -1,36 +1,83 @@
-# 크롤링 관련 모듈
-import time
-from datetime import datetime, timedelta
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-import pyperclip
-import pandas as pd
-from credentials import u_id, u_pw
-
-title_data = ['라이센스 관련 문의', 'office 라이선스 문의', 'IT분야취업연계과정 | 스마트팩토리 SW개발자양성과정(부산) 온라인설명회가 2월 16일 진행됩니다!', '임직원 pc 보유 현황 관리', '[프리랜서,재택근무] 채용담당자 모집', 'PC 렌탈 문의드려요-', '구글드라이브 vs 원드라이브 고민입니다.', '[드림어스컴퍼니/FLO] HR Manager 채용', '[헤딩] 당산 오피스 / \ufeff신입, 주니어, 경력 헤드헌터(프리랜서)분들을 모십니다!!', '복합기 렌탈 견적 부탁드립니다', '사내간식 및 전산장비 제안요청', 'PC 컴퓨터 및 모니터 견적 문의', '사내 자산 ( PC, 노트북 ) 보안프로그램 문의 [ 40명분 ]', '[플리토] HR 담당 채용 (총무/인사) _ 2/13 24:00 까지', 'PC 및 모니터 납품 업체 견적 문의드리고자 합니다.']
-time_data = ['2023.02.15. 21:10', '2023.02.15. 17:35', '2023.02.15. 13:40', '2023.02.15. 10:37', '2023.02.14. 01:14', '2023.02.13. 18:02', '2023.02.13. 13:52', '2023.02.10. 16:36', '2023.02.10. 16:26', '2023.02.09. 17:58', '2023.02.08. 13:58', '2023.02.06. 17:14', '2023.02.05. 15:17', '2023.02.03. 13:00', '2023.02.02. 15:10']
-
-
-yesterday = datetime.now() - timedelta(days=1)
-start_time = datetime(yesterday.year, yesterday.month, yesterday.day, 16, 1)
-print("start_time : ",start_time)
-## 오늘 16:00 시간 구하기
-today = datetime.now()
-end_time = datetime(today.year, today.month, today.day, 16, 0)
-print("end_time : ", end_time)
-
-
-df = pd.DataFrame({"제목" : title_data, "날짜" : time_data })
-print(df)
-df['날짜'] = pd.to_datetime(df['날짜'], errors='coerce')
-print(df)
-df['날짜'] = pd.to_datetime(df['날짜'], format='%Y.%m.%d. %H:%M')
-print(df)
-
-df.sort_values(by='날짜', ascending=False, inplace=True)  # 날짜 내림차순 정렬
-print(df)
-
-
-ftd = df.loc[(df['날짜'] >= start_time) & (df['날짜'] <= end_time)]
-print(ftd)
+# BeautifulSoup은 HTML 과 XML 파일로부터 데이터를 수집하는 라이브러리
+# pip install bs4
+# pip install requests
+# pip install fake-useragent
+ 
+from bs4 import BeautifulSoup 
+import requests as req
+from fake_useragent import UserAgent
+import csv
+ 
+# 로그인 정보(개발자 도구)
+login_info = {
+    'redirectUrl': 'http://www.danawa.com/member/myPage.php',
+    'loginMemberType': 'general',
+    'id': 'etinnov',
+    'isSaveId': 'true',
+    'password': 'gurtlsruddud1!'
+} 
+ 
+# 헤더 정보
+headers = { 
+    'User-agent': UserAgent().chrome,
+    'Referer' : 'https://auth.danawa.com/login?url=http%3A%2F%2Fwww.danawa.com%2Fmember%2FmyPage.php' 
+}
+ 
+# 로그인 URL
+baseUrl = 'https://auth.danawa.com/login'
+ 
+with req.session() as s:
+    # Request(로그인 시도)
+    res = s.post(baseUrl, login_info, headers=headers)
+ 
+    # 로그인 시도 실패시 예외
+    if res.status_code != 200:
+        raise Exception("Login failed.")
+    
+    # 본문 수신 데이터 확인
+    # print(res.content.decode('UTF-8'))
+ 
+    # 로그인 성공 후 세션 정보를 가지고 페이지 이동
+    res = s.get('https://buyer.danawa.com/order/Order/orderList', headers=headers)
+ 
+    # 페이지 이동 후 수신 데이터 확인
+    # print(res.text)
+ 
+    # bs4 초기화
+    soup = BeautifulSoup(res.text,"html.parser")
+ 
+    # 로그인 성공 여부 체크
+    check_name = soup.find('p', class_='user')
+    # print(check_name)
+ 
+    # 선택자 사용
+    info_list = soup.select('div.my_info.no_sub_info > div > ul > li')
+    # print(info_list) # 확인
+ 
+    # 제목
+    print()
+    print('-' * 50)
+ 
+    myshoppingList = []
+    for v in info_list:
+        # 속성 메소드 확인
+        # print(dir(v))
+ 
+        # 필요한 텍스트 추출
+        proc, val = v.find('span').string.strip(), v.find('strong').string.strip()
+        print('{} : {}'.format(proc,val))
+ 
+        # 파일 저장 목적 변수에 저장
+        temp = []
+        temp.append(v.find('span').string.strip())
+        temp.append(v.find('strong').string.strip())
+        myshoppingList.append(temp)
+ 
+    print('-' * 50)
+ 
+    with open('myshoppingList.csv',"w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(myshoppingList)
+        print('CSV File created!')
+    f.close
+ 
