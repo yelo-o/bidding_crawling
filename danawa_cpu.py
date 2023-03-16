@@ -45,7 +45,7 @@ with req.session() as s:
     if res.status_code != 200:
         raise Exception("Login failed.")
     
-    danawa_prices= []  # 가격 모아놓기
+    danawa_cpu_prices= []  # 가격 모아놓기
     for i in cpu_list:
         # 로그인 성공 후 세션 정보를 가지고 페이지 이동
         res = s.get(f'https://prod.danawa.com/info/?pcode={i}&cate=113973', headers=headers)
@@ -64,15 +64,15 @@ with req.session() as s:
         
         
         if len(qq) == 0:
-            danawa_prices.append('-')
+            danawa_cpu_prices.append('-')
         else:
             for q in qq:
                 ww = q.find_all('span', 'lwst_prc')
                 for w in ww:
                     e = w.find('em', class_='prc_c' )
-                    danawa_prices.append(e.text)
+                    danawa_cpu_prices.append(e.text)
                         
-            print(danawa_prices, len(danawa_prices))
-    df3 = pd.DataFrame({'종류':cpu_names, '가격':danawa_prices})
+            print(danawa_cpu_prices, len(danawa_cpu_prices))
+    df3 = pd.DataFrame({'종류':cpu_names, '가격':danawa_cpu_prices})
     print(df3)
 
