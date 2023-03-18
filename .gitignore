@@ -1,5 +1,4 @@
 venv/
 *.ipynb
 __pycache__/
-*.xlsx
 credentials.py

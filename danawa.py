@@ -5,3 +5,4 @@ from danawa_ram import danawa_ram_prices
 danawa_prices = danawa_cpu_prices + danawa_ram_prices + ['-', '-', '-', '-', '-']
 
 print(danawa_prices, len(danawa_prices))
+
