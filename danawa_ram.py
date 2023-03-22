@@ -19,10 +19,9 @@ headers = {
     'Referer' : 'https://auth.danawa.com/login?url=http%3A%2F%2Fwww.danawa.com%2Fmember%2FmyPage.php' 
 }
 
-# 로그인 URL
+# # 로그인 URL
 baseUrl = 'https://auth.danawa.com/login'
 
-# search_keyword = ["i3 6300"]  # 테스트용 키보드
 
 ram_names = ['RAM ddr3 4G', 'RAM ddr3 8G', 'RAM ddr4 4G', 'RAM ddr4 8G', 'RAM ddr4 16G' ]
 ram_list = ['5545241','5549101','14679644','16524044','17009480']
@@ -38,7 +37,7 @@ with req.session() as s:
     danawa_ram_prices= []  # 가격 모아놓기
     for i in ram_list:
         # 로그인 성공 후 세션 정보를 가지고 페이지 이동
-        res = s.get(f'https://prod.danawa.com/info/?pcode={i}&cate=112752', headers=headers)
+        res = s.get(f'https://prod.danawa.com/info/?pcode={i}&cate=112752',headers=headers)
 
         # bs4 초기화
         soup = BeautifulSoup(res.text,"html.parser")

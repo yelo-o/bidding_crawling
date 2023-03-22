@@ -135,8 +135,11 @@ for li_name in target_names:
         new_li_prices.append(li_prices[index])
     else:
         new_li_names.append(li_name)
-        new_li_prices.append('-')
+        new_li_prices.append(0)
         
+print(new_li_prices)
+
+'''
 df = pd.DataFrame({"CPU 이름": new_li_names, "CPU 가격": new_li_prices})
 print(df)
 
@@ -146,3 +149,5 @@ with open('list.csv', 'w', newline='') as file:
     writer.writerow(['Numbers'])  # 첫 번째 행에 'Numbers'를 작성한다.
     for name in li_names:  # list 리스트의 각 요소에 대해 반복한다.
         writer.writerow([name]) # 각 요소를 csv 파일에 작성한다.
+        
+'''

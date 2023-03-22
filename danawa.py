@@ -3,7 +3,7 @@ from danawa_ram import danawa_ram_prices
 import pandas as pd
 
 # 다나와가격 = 씨피유가격 + 램 가격
-danawa_prices = danawa_cpu_prices + danawa_ram_prices + ['-', '-', '-', '-', '-']
+danawa_prices = danawa_cpu_prices + danawa_ram_prices + [0, 0, 0, 0, 0]
 
 print(danawa_prices, len(danawa_prices))
 
