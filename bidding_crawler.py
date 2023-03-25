@@ -53,17 +53,17 @@ wb = openpyxl.load_workbook(filename=file_path)  # 테스트
 # 1번 시트 선택
 ws = wb['1. IT 전체 개별단가']
 
-# C열의 셀들 가져오기
+# # C열의 셀들 가져오기
 cells = ws['C']
 
 
 # # C열의 마지막 행 찾기
 # last_row = max(c.row for c in cells if c.value is not None)
 
-# 마지막 행 번호 구하기
+# # 마지막 행 번호 구하기
 last_row = ws.max_row
 
-# 마지막 행 + 2 아래 행 삭제
+# # 마지막 행 + 2 아래 행 삭제
 ws.delete_rows(last_row-1)
 
 # last_row = ws.max_row

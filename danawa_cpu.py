@@ -4,7 +4,7 @@ import csv
 from fake_useragent import UserAgent
 import requests as req
 
-
+# 로그인 정보(개발자 도구)
 login_info = {
     'redirectUrl': 'http://www.danawa.com/member/myPage.php',
     'loginMemberType': 'general',
@@ -13,12 +13,16 @@ login_info = {
     'password': 'gurtlsruddud1!'
 }
 
+# 헤더 정보
 headers = {
     'User-agent': UserAgent().chrome,
     'Referer': 'https://auth.danawa.com/login?url=http%3A%2F%2Fwww.danawa.com%2Fmember%2FmyPage.php'
 }
 
+# # 로그인 URL
 baseUrl = 'https://auth.danawa.com/login'
+
+
 
 cpu_names = ['i3 3250', 'i3 4370', 'i3 6300', 'i3 7300', 'i3 8100', 'i3 9100', 'i5 3470',
              'i5 4570', 'i5 6500', 'i5 7400', 'i5 8400', 'i5 9400', 'i7 3770', 'i7 4770',
@@ -28,18 +32,17 @@ cpu_list = ['17870279', '6112509', '5796940', '7812271', '15827978', '14740478',
             '4905563', '5684847', '7898218', '12543974', '7893904', '1678801', '6112690',
             '5714311', '7898143', '13360280', '11083932']
 
-ram_list = ['5545241', '5549101', '14679644', '16524044', '17009480']
 
 with req.session() as s:
+    # Request(로그인 시도)
     res = s.post(baseUrl, login_info, headers=headers)
 
     if res.status_code != 200:
         raise Exception("Login failed.")
 
-    danawa_cpu_prices = []
+    danawa_cpu_prices= []  # 가격 모아놓기
     for i in cpu_list:
-        
-        
+        # 로그인 성공 후 세션 정보를 가지고 페이지 이동
         res = s.get(
             f'https://prod.danawa.com/info/?pcode={i}&cate=113973', headers=headers)
 
