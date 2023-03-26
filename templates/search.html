@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>중고 시세 데이터 크롤러</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+</head>
+<body>
+  <main class="container">
+    <hgroup>
+<!--       <h1>Search Results for {{keyword}} : </h1> -->
+      <a target="_blank" href="/export?">Export to file</a>
+    </hgroup>
+    <figure>
+      <table role="grid">
+      <thead>
+        <tr>
+          <th>날짜</th>
+          <th>사이트명</th>
+          <th>i3-3250</th>
+          <th>i3-4370</th>
+          <th>i3-6300</th>
+          <th>i3-7300(주력모델)</th>
+          <th>i3-8100</th>
+          <th>i3-9100</th>
+          <th>i5-3470</th>
+          <th>i5-4570</th>
+          <th>i5-6500</th>
+          <th>i5-7400(주력모델)</th>
+          <th>i5-8400</th>
+          <th>i5-9400</th>
+          <th>i7-3770</th>
+          <th>i7-4770</th>
+          <th>i7-6700</th>
+          <th>i7-7700(주력모델)</th>
+          <th>i7-8700</th>
+          <th>i7-9700</th>
+          <th>DDR3 4G</th>
+          <th>DDR3 8G</th>
+          <th>DDR3 4G</th>
+          <th>DDR3 8G</th>
+          <th>DDR3 16G</th>
+          <th>모니터 LCD 20~23인치</th>
+          <th>모니터 LED 22인치</th>
+          <th>모니터 LED 23인치</th>
+          <th>모니터 LED 24인치</th>
+          <th>모니터 LED 27인치</th>
+          <th>비고</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for price in data1 %}
+            <td>{{price}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for price in data2 %}
+            <td>{{price}}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for price in data3 %}
+            <td>{{price}}</td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+    </figure>
+  </main>
+</body>
+</html> 

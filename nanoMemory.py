@@ -4,26 +4,26 @@ import pandas as pd
 import csv
 
 # 함수 정의
-def get_nm(url):
-    for i in gen_urls:
-        response = get(f"{url}{i}")
-        if response.status_code != 200:
-            print("웹사이트를 불러올 수 없다.")
-        else:
-            soup = BeautifulSoup(response.text, "html.parser")
-        # 이름
-        product_names = soup.find_all('td', class_='prdname')
-        for td in product_names:
-            b_tags = td.find_all('b')
-            for b_tag in b_tags:
-                li_names.append(b_tag.text)
-        # 가격
-        prices = soup.find_all('td', class_='price')
-        for price in prices:
-            st_tags = price.find_all('strong')
-            for st_tag in st_tags:
-                li_prices.append(st_tag.text.replace("\n", "").replace("\t", ""))
-                li_prices = list(filter(lambda x: x != '1' and x != '0', li_prices))
+# def get_nm(url):
+#     for i in gen_urls:
+#         response = get(f"{url}{i}")
+#         if response.status_code != 200:
+#             print("웹사이트를 불러올 수 없다.")
+#         else:
+#             soup = BeautifulSoup(response.text, "html.parser")
+#         # 이름
+#         product_names = soup.find_all('td', class_='prdname')
+#         for td in product_names:
+#             b_tags = td.find_all('b')
+#             for b_tag in b_tags:
+#                 li_names.append(b_tag.text)
+#         # 가격
+#         prices = soup.find_all('td', class_='price')
+#         for price in prices:
+#             st_tags = price.find_all('strong')
+#             for st_tag in st_tags:
+#                 li_prices.append(st_tag.text.replace("\n", "").replace("\t", ""))
+#                 li_prices = list(filter(lambda x: x != '1' and x != '0', li_prices))
 
 
 #2.1 나노 메모리 - cpu
@@ -137,17 +137,4 @@ for li_name in target_names:
         new_li_names.append(li_name)
         new_li_prices.append(0)
         
-print(new_li_prices)
-
-'''
-df = pd.DataFrame({"CPU 이름": new_li_names, "CPU 가격": new_li_prices})
-print(df)
-
-# li_names를 모두 csv로 저장하여 target 데이터 만들기
-with open('list.csv', 'w', newline='') as file:
-    writer = csv.writer(file)  # csv 파일을 작성하기 위한 writer 객체를 생성한다.
-    writer.writerow(['Numbers'])  # 첫 번째 행에 'Numbers'를 작성한다.
-    for name in li_names:  # list 리스트의 각 요소에 대해 반복한다.
-        writer.writerow([name]) # 각 요소를 csv 파일에 작성한다.
-        
-'''
+print(new_li_prices,len(new_li_prices))
