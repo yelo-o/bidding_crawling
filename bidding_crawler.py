@@ -127,7 +127,5 @@ current_dir = os.getcwd()
 file_name = f'{cr_today}_IT 시세 취합.xlsx'
 file_path = os.path.join(current_dir, file_name)
 
-
-
 wb.save(file_path)
 
