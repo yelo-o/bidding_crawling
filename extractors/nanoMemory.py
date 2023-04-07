@@ -1,8 +1,7 @@
 from requests import get
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
-import pandas as pd
-import csv
-
 
 def extract_nm():
   #2.1 나노 메모리 - cpu
