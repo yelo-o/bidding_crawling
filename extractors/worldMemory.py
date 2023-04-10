@@ -11,12 +11,11 @@ def extract_wm():
   
   cpu_names = []
   cpu_prices = []
-  target_cpu_names = ['아이비I3 3250','아이비I5 3470','아이비I7 3770',
-                      '하스웰I3 4370','하스웰I5 4570','하스웰I7 4770',
-                      '스카이I3 6300','스카이I5 6500','스카이I7 6700',
-                      '카비I3 7300','카비I5 7400','카비I7 7700',
-                      '커피I3 8100','커피I5 8400','커피I7 8700',
-                      '커피I3 9100','커피I5 9400','커피I7 9700']
+  target_cpu_names = ['아이비I3 3250', '하스웰I3 4370', '스카이I3 6300',
+                      '카비I3 7300', '커피I3 8100', '커피I3 9100', '아이비I5 3470',
+                      '하스웰I5 4570', '스카이I5 6500', '카비I5 7400', '커피I5 8400',
+                      '커피I5 9400', '아이비I7 3770', '하스웰I7 4770',
+                      '스카이I7 6700', '카비I7 7700', '커피I7 8700', '커피I7 9700']
   
   # cpu_names와 target_cpu_names의 순서를 맞추기 위해 새로운 리스트를 만듭니다.
   new_cpu_names = []
@@ -151,6 +150,10 @@ def extract_wm():
   
   # ' 원' 제거
   world_total_prices = [i.replace(' 원', '') for i in world_total_prices]
+
+  print(world_total_prices, len(world_total_prices))
+  print("월드메모리 데이터 크롤링 완료")
   return world_total_prices
+
   # df = pd.DataFrame({"이름":total_names, "가격":world_total_prices})
   # print(df)

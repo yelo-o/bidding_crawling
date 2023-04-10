@@ -76,5 +76,6 @@ def extract_danawa():
   get_danawa(ram_list,ram_names,danawa_ram_prices)
   
   danawa_prices= danawa_cpu_prices + danawa_ram_prices + [0, 0, 0, 0, 0]
-  print("다나와 모든 제품 가격들 \n", danawa_prices,len(danawa_prices))
+  print(danawa_prices, len(danawa_prices))
+  print("다나와 데이터 크롤링 완료")
   return danawa_prices
