@@ -52,5 +52,5 @@ pip install selenium openpyxl python-dateutil beautifulsoup4 pandas requests
 ## 2023.04.26(수)
 - 불필요한 파일 삭제 및 정리
 
-# 4. 예상되는 오류
+# 4. 추후에 예상되는 오류
 - 사이트 구조 변경 또는 기존에 팔던 제품을 더 이상 팔지 않는 경우 오류 발생 가능성 有
