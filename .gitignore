@@ -2,9 +2,9 @@
 venv/
 build/
 dist/
-*.ipynb
 __pycache__/
-credentials.py
+*.ipynb
 *.iml
 *.xml
 *.spec
+*.csv
