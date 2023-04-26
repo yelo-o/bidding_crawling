@@ -43,7 +43,7 @@ pip install selenium openpyxl python-dateutil beautifulsoup4 pandas requests
 - 3개 사이트 데이터 크롤링
 - 크롤링 데이터 "it_data.xlsx"에 업데이트 
 
-## 2023.04.10 
+## 2023.04.10
 방식 변경
 - 3개 사이트 데이터 크롤링
 - 크롤링 데이터 "{오늘 날짜}.csv" 파일로 저장
@@ -51,3 +51,6 @@ pip install selenium openpyxl python-dateutil beautifulsoup4 pandas requests
 
 ## 2023.04.26(수)
 - 불필요한 파일 삭제 및 정리
+
+# 4. 예상되는 오류
+- 사이트 구조 변경 또는 기존에 팔던 제품을 더 이상 팔지 않는 경우 오류 발생 가능성 有
